@@ -42,7 +42,7 @@ public class CLINICAMAP2 {
         String op = "";
         int id;
 
-        do {
+        do {                       
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_IDIOMA));
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_CADASTRAR));
@@ -53,6 +53,7 @@ public class CLINICAMAP2 {
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_SAIR));
 
             op = input.nextLine();
+            
             switch (op) {
                 case "1":
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
@@ -99,6 +100,7 @@ public class CLINICAMAP2 {
 
                     } else if (op.endsWith("2")) {
                         paciente = new Paciente();
+                        e = new Endereco();
                         System.out.println("Nome: ");
                         paciente.setNome(input.nextLine());
                         System.out.println("CPF: ");
@@ -136,13 +138,46 @@ public class CLINICAMAP2 {
                         consulta = new Consulta();
                         paciente = new Paciente();
                         medico = new Medico();
-                        System.out.println("Nome Paciente: ");
-                        paciente.setNome(input.nextLine());
-                        System.out.println("Nome Médico: ");
-                        medico.setNome(input.nextLine());
+                        //System.out.println("Nome Paciente: ");
+                        //paciente.setNome(input.nextLine());
+                        //System.out.println("Nome Médico: ");
+                        //medico.setNome(input.nextLine());
+                        //System.out.println("Descrição: ");
+                        //consulta.setDescricao(input.nextLine());
+                        //System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
+                        for (Medico m : facade.listarMedicos()) {
+                            System.out.println(m);
+
+                        }
+                        
+                        
+                        System.out.println("Informe o CRM do médico de plantão: ");
+                        String crm = input.nextLine();
+                        
+                        for (Paciente p : facade.listarPacientes()) {
+                            System.out.println(p);
+
+                        }
+                        
+                        System.out.println("Informe o RG do paciente: ");                       
+                        String rg = input.nextLine();
+                        
+                        System.out.println(crm);
+                        System.out.println(rg);
+                        
                         System.out.println("Descrição: ");
                         consulta.setDescricao(input.nextLine());
-                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
+                        System.out.println("Data da consulta: ");
+                        consulta.setDataConsulta(DateUtil.stringToDate(input.nextLine()));
+                        medico.setCrm(crm);
+                        paciente.setRg(rg);
+                        consulta.setMedico(medico);
+                        consulta.setPaciente(paciente);
+                        //System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
+                        
+                        
+
+                        
                         facade.salvarConsulta(consulta);
                     }
                     break;
@@ -183,9 +218,8 @@ public class CLINICAMAP2 {
                         paciente = facade.buscarPaciente(id);
                         if (paciente != null) {
 
-                            System.out.println("Novo Endereço: (" + paciente.getNome()+ ")");
+                            System.out.println("Novo Endereço: (" + paciente.getNome() + ")");
                             paciente.setNome(input.nextLine());
-                            
 
                             facade.editarPaciente(paciente);
                             System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_EDITAR));
@@ -402,7 +436,5 @@ public class CLINICAMAP2 {
         } while (!op.equals("6"));
 
     } // fim do método main
-        
-    }
-    
 
+}

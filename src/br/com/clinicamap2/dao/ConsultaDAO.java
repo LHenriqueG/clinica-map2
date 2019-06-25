@@ -6,6 +6,8 @@
 package br.com.clinicamap2.dao;
 
 import br.com.clinicamap2.model.Consulta;
+import br.com.clinicamap2.model.Medico;
+import br.com.clinicamap2.model.Paciente;
 import br.com.clinicamap2.util.MensagensUtil;
 import br.com.clinicamap2.util.PersistenceUtil;
 import java.util.List;
@@ -18,12 +20,17 @@ import javax.persistence.Query;
  */
 public class ConsultaDAO {
     EntityManager em;
-
+    MedicoDAO mDAO = new MedicoDAO();
+    PacienteDAO pDAO = new PacienteDAO();
     public void inserir(Consulta consulta) throws Exception {
 
         try {
             em = PersistenceUtil.createEntityManager();
             em.getTransaction().begin();
+            Medico medico = mDAO.buscarPorCrm(consulta.getMedico().getCrm());
+            Paciente paciente = pDAO.buscarPorRg(consulta.getPaciente().getRg());
+            consulta.setMedico(medico);
+            consulta.setPaciente(paciente);
             em.persist(consulta);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -107,4 +114,5 @@ public class ConsultaDAO {
             em.close();
         }
     }
+    
 }

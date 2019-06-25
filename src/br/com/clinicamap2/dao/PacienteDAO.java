@@ -111,4 +111,18 @@ public class PacienteDAO {
             em.close();
         }
     }
+    
+    public Paciente buscarPorRg(String rg) throws Exception {
+        try {
+            em = PersistenceUtil.createEntityManager();
+            Query query = em.createQuery("SELECT p FROM Paciente p WHERE p.rg =:p", Paciente.class);
+            query.setParameter("p", rg);
+            return (Paciente) query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(MensagensUtil.getString(MensagensUtil.MSG_ERRO_CONSULTAR));
+        } finally {
+            em.close();
+        }
+    }
 }

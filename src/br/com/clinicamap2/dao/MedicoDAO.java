@@ -108,4 +108,18 @@ public class MedicoDAO {
         }
     }
     
+    public Medico buscarPorCrm(String crm) throws Exception {
+        try {
+            em = PersistenceUtil.createEntityManager();
+            Query query = em.createQuery("SELECT m FROM Medico m WHERE m.crm =:m", Medico.class);
+            query.setParameter("m", crm);
+            return (Medico) query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(MensagensUtil.getString(MensagensUtil.MSG_ERRO_CONSULTAR));
+        } finally {
+            em.close();
+        }
+    }
+    
 }
