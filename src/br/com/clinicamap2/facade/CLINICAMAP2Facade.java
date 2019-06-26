@@ -8,10 +8,12 @@ package br.com.clinicamap2.facade;
 import br.com.clinicamap2.dao.ConsultaDAO;
 import br.com.clinicamap2.dao.MedicoDAO;
 import br.com.clinicamap2.dao.PacienteDAO;
+import br.com.clinicamap2.dao.PessoaDAO;
 import br.com.clinicamap2.dao.SecretariaDAO;
 import br.com.clinicamap2.model.Consulta;
 import br.com.clinicamap2.model.Medico;
 import br.com.clinicamap2.model.Paciente;
+import br.com.clinicamap2.model.Pessoa;
 import br.com.clinicamap2.model.Secretaria;
 import java.util.List;
 
@@ -20,6 +22,48 @@ import java.util.List;
  * @author Luís Henrique
  */
 public class CLINICAMAP2Facade {
+    
+    
+    private static CLINICAMAP2Facade instance;
+    
+    private CLINICAMAP2Facade(){
+        
+    }
+    
+    public static CLINICAMAP2Facade getInstance(){
+        if(instance == null){
+            instance = new CLINICAMAP2Facade();
+        }
+        return instance;
+    }
+    
+    //Pessoa
+    private PessoaDAO pessoaDAO = new PessoaDAO();
+    
+    public void salvarPessoa(Pessoa pessoa) throws Exception{
+        pessoaDAO.inserir(pessoa);
+    }
+    
+    public void editarPessoa(Pessoa pessoa) throws Exception{
+        pessoaDAO.atualizar(pessoa);
+    }
+    
+    public void removerPessoa(Pessoa pessoa) throws Exception{
+        pessoaDAO.remover(pessoa);
+    }
+    
+    public Pessoa buscarPessoa(int id) throws Exception{
+        return pessoaDAO.buscarPorId(id);
+    }
+    
+    public List<Pessoa> listarPessoas() throws Exception{
+        return pessoaDAO.listar();
+    }
+    
+    public List<Pessoa> buscarPessoas(String busca) throws Exception{
+        return pessoaDAO.buscar(busca);
+    }
+    
     //Médico
     private MedicoDAO medicoDAO = new MedicoDAO();
     

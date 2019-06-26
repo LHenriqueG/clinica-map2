@@ -30,19 +30,20 @@ public class CLINICAMAP2 {
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
         Endereco e = null;
-        Contato contato = new Contato();
-        Usuario usuario = new Usuario();
+        Contato contato = null;
+        Usuario usuario = null;
         Medico medico = null;
         Paciente paciente = null;
         Secretaria secretaria = null;
         Consulta consulta = null;
-        CLINICAMAP2Facade facade = new CLINICAMAP2Facade();
+        CLINICAMAP2Facade facade = CLINICAMAP2Facade.getInstance();
 
         // menu
         String op = "";
         int id;
 
-        do {                       
+        do {
+            //Exibe o MENU PRINCIPAL
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_IDIOMA));
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_CADASTRAR));
@@ -53,18 +54,18 @@ public class CLINICAMAP2 {
             System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_SAIR));
 
             op = input.nextLine();
-            
+
             switch (op) {
                 case "1":
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
-
-                    System.out.println("1 - pt-BR");
-                    System.out.println("2 - en-US");
-                    System.out.println("3 - fr-FR");
-
-                    System.out.println("Informe o idioma: ");
+                    //Lista as opções de idiomas possíveis
+                    System.out.println(MensagensUtil.getString((MensagensUtil.MSG_LISTA_BR)));
+                    System.out.println(MensagensUtil.getString((MensagensUtil.MSG_LISTA_EN)));
+                    System.out.println(MensagensUtil.getString((MensagensUtil.MSG_LISTA_FR)));
+                    //Captura o idioma desejado
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_IDIOMA));
                     op = input.nextLine();
-
+                    
                     if (op.endsWith("1")) {
                         MensagensUtil.setLocale(MensagensUtil.PT_BR);
                     } else if (op.endsWith("2")) {
@@ -77,23 +78,25 @@ public class CLINICAMAP2 {
                 case "2":
 
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
-                    System.out.println("1 - MÉDICO");
-                    System.out.println("2 - PACIENTE");
-                    System.out.println("3 - SECRETÁRIA");
-                    System.out.println("4 - CONSULTA");
+                    //Exibi a lista de opções para realização dos cadastros
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_MEDICO));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_PACIENTE));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_SECRETARIA));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_CONSULTA));
+                    
 
-                    System.out.println("Informe quem você deseja cadastrar: ");
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_INFORMAR));
                     op = input.nextLine();
                     medico = new Medico();
                     if (op.endsWith("1")) {
-                        System.out.println("Nome: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_NOME));
                         medico.setNome(input.nextLine()); // ler uma linha e guarda em nome
-                        System.out.println("CPF: ");
-                        medico.setCpf(input.nextLine());
-                        System.out.println("CRM: ");
-                        medico.setCrm(input.nextLine());
-                        System.out.println("Especialidade: ");
-                        medico.setEspecialidade(input.nextLine());
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_CPF));
+                        medico.setCpf(input.nextLine()); // ler uma linha e guarda em cpf
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_CRM));
+                        medico.setCrm(input.nextLine()); // ler uma linha e guarda em crm
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ESPECIALIDADE));
+                        medico.setEspecialidade(input.nextLine()); // ler uma linha e guarda em especialidade
                         System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
                         facade.salvarMedico(medico);
                         break;
@@ -101,34 +104,40 @@ public class CLINICAMAP2 {
                     } else if (op.endsWith("2")) {
                         paciente = new Paciente();
                         e = new Endereco();
-                        System.out.println("Nome: ");
-                        paciente.setNome(input.nextLine());
-                        System.out.println("CPF: ");
-                        paciente.setCpf(input.nextLine());
-                        System.out.println("RG: ");
-                        paciente.setRg(input.nextLine());
-                        System.out.println("Data de Nascimento:");
-                        paciente.setDataNascimento(DateUtil.stringToDate(input.nextLine()));
-                        System.out.println("Logradouro: ");
-                        e.setLogradouro(input.nextLine());
-                        System.out.println("Número: ");
-                        e.setNumero(input.nextLine());
-                        paciente.setEndereco(e);
+                        contato = new Contato();
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_NOME));
+                        paciente.setNome(input.nextLine()); // ler uma linha e guarda em nome
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_CPF));
+                        paciente.setCpf(input.nextLine()); // ler uma linha e guarda em cpf
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_RG));
+                        paciente.setRg(input.nextLine()); // ler uma linha e guarda em rg
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_NASCIMENTO));
+                        paciente.setDataNascimento(DateUtil.stringToDate(input.nextLine())); // ler uma linha e guarda em data
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ENDERECO));
+                        e.setLogradouro(input.nextLine()); // ler uma linha e guarda em endereço
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_NUMERO));
+                        e.setNumero(input.nextLine()); // ler uma linha e guarda em número
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_EMAIL));
+                        contato.setEmail(input.nextLine()); // ler uma linha e guarda em email
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_TELEFONE));
+                        contato.setTelefone(input.nextLine()); // ler uma linha e guarda em telefone
+                        paciente.setEndereco(e); //seta o endereço para paciente
+                        paciente.setContato(contato); // seta o contato para paciente
                         System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
-                        facade.salvarPaciente(paciente);
+                        facade.salvarPaciente(paciente); // salvar o paciente, através da fachada para acessar o DAO
                         break;
                     } else if (op.endsWith("3")) {
                         secretaria = new Secretaria();
                         usuario = new Usuario();
-                        System.out.println("Nome: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_NOME));
                         secretaria.setNome(input.nextLine());
-                        System.out.println("CPF: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_CPF));
                         secretaria.setCpf(input.nextLine());
-                        System.out.println("Data de Nascimento:");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_NASCIMENTO));
                         secretaria.setDataNascimento(DateUtil.stringToDate(input.nextLine()));
-                        System.out.println("Login: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_LOGIN));
                         usuario.setLogin(input.nextLine());
-                        System.out.println("Senha: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_SENHA));
                         usuario.setSenha(input.nextLine());
                         secretaria.setUsuario(usuario);
                         System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
@@ -138,62 +147,51 @@ public class CLINICAMAP2 {
                         consulta = new Consulta();
                         paciente = new Paciente();
                         medico = new Medico();
-                        //System.out.println("Nome Paciente: ");
-                        //paciente.setNome(input.nextLine());
-                        //System.out.println("Nome Médico: ");
-                        //medico.setNome(input.nextLine());
-                        //System.out.println("Descrição: ");
-                        //consulta.setDescricao(input.nextLine());
-                        //System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
+
                         for (Medico m : facade.listarMedicos()) {
                             System.out.println(m);
 
                         }
-                        
-                        
-                        System.out.println("Informe o CRM do médico de plantão: ");
+
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_CRM));
                         String crm = input.nextLine();
-                        
+
                         for (Paciente p : facade.listarPacientes()) {
                             System.out.println(p);
 
                         }
-                        
-                        System.out.println("Informe o RG do paciente: ");                       
+
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_RG));
                         String rg = input.nextLine();
-                        
-                        System.out.println(crm);
-                        System.out.println(rg);
-                        
-                        System.out.println("Descrição: ");
+
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_DESCRICAO));
                         consulta.setDescricao(input.nextLine());
-                        System.out.println("Data da consulta: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_DATA));
                         consulta.setDataConsulta(DateUtil.stringToDate(input.nextLine()));
                         medico.setCrm(crm);
                         paciente.setRg(rg);
                         consulta.setMedico(medico);
                         consulta.setPaciente(paciente);
-                        //System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
                         
-                        
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SALVAR));
 
-                        
                         facade.salvarConsulta(consulta);
                     }
                     break;
                 case "3":
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
 
-                    System.out.println("1 - MÉDICO");
-                    System.out.println("2 - PACIENTE");
-                    System.out.println("3 - SECRETÁRIA");
-                    System.out.println("4 - CONSULTA");
+                    
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_MEDICO));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_PACIENTE));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_SECRETARIA));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_CONSULTA));
 
-                    System.out.println("Informe de qual lista deseja atualizar: ");
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ATUALIZAR));
                     op = input.nextLine();
                     if (op.endsWith("1")) {
 
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         medico = facade.buscarMedico(id);
@@ -212,7 +210,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else if (op.endsWith("2")) {
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         paciente = facade.buscarPaciente(id);
@@ -228,7 +226,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else if (op.endsWith("3")) {
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         secretaria = facade.buscarSecretaria(id);
@@ -246,7 +244,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else {
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         consulta = facade.buscarConsulta(id);
@@ -266,16 +264,17 @@ public class CLINICAMAP2 {
                 case "4":
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
 
-                    System.out.println("1 - MÉDICO");
-                    System.out.println("2 - PACIENTE");
-                    System.out.println("3 - SECRETÁRIA");
-                    System.out.println("4 - CONSULTA");
+                    
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_MEDICO));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_PACIENTE));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_SECRETARIA));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_CONSULTA));
 
-                    System.out.println("Informe de qual lista você deseja excluir: ");
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_EXCLUIR));
                     op = input.nextLine();
                     if (op.endsWith("1")) {
 
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         medico = facade.buscarMedico(id);
@@ -287,7 +286,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else if (op.endsWith("2")) {
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         paciente = facade.buscarPaciente(id);
@@ -299,7 +298,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else if (op.endsWith("3")) {
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         secretaria = facade.buscarSecretaria(id);
@@ -311,7 +310,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else {
-                        System.out.println("Informe o ID: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_ID));
                         id = Integer.parseInt(input.nextLine());
 
                         consulta = facade.buscarConsulta(id);
@@ -327,12 +326,13 @@ public class CLINICAMAP2 {
                 case "5":
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
 
-                    System.out.println("1 - MÉDICO");
-                    System.out.println("2 - PACIENTE");
-                    System.out.println("3 - SECRETÁRIA");
-                    System.out.println("4 - CONSULTA");
+                    
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_MEDICO));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_PACIENTE));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_SECRETARIA));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_CONSULTA));
 
-                    System.out.println("Informe qual a lista deseja exibir: ");
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_EXIBIR));
                     op = input.nextLine();
                     if (op.endsWith("1")) {
                         for (Medico m : facade.listarMedicos()) {
@@ -359,15 +359,16 @@ public class CLINICAMAP2 {
                 case "6":
                     System.out.println(MensagensUtil.getString(MensagensUtil.MENU_PRINCIPAL_TITULO));
 
-                    System.out.println("1 - MÉDICO");
-                    System.out.println("2 - PACIENTE");
-                    System.out.println("3 - SECRETÁRIA");
-                    System.out.println("4 - CONSULTA");
+                    
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_MEDICO));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_PACIENTE));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_SECRETARIA));
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_LISTA_CONSULTA));
 
-                    System.out.println("Informe de que lista você deseja buscar: ");
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_PESQUISAR));
                     op = input.nextLine();
                     if (op.endsWith("1")) {
-                        System.out.println("Busca: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_BUSCA));
                         String busca = input.nextLine();
 
                         List<Medico> lista = facade.buscarMedicos(busca);
@@ -381,7 +382,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else if (op.endsWith("2")) {
-                        System.out.println("Busca: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_BUSCA));
                         String busca = input.nextLine();
 
                         List<Paciente> lista = facade.buscarPacientes(busca);
@@ -395,7 +396,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else if (op.endsWith("3")) {
-                        System.out.println("Busca: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_BUSCA));
                         String busca = input.nextLine();
 
                         List<Secretaria> lista = facade.buscarSecretarias(busca);
@@ -409,7 +410,7 @@ public class CLINICAMAP2 {
                         }
                         break;
                     } else {
-                        System.out.println("Busca: ");
+                        System.out.println(MensagensUtil.getString(MensagensUtil.MSG_CAPTURAR_BUSCA));
                         String busca = input.nextLine();
 
                         List<Consulta> lista = facade.buscarConsultas(busca);
@@ -425,7 +426,7 @@ public class CLINICAMAP2 {
                     }
 
                 case "7":
-                    System.out.println("Saindo....");
+                    System.out.println(MensagensUtil.getString(MensagensUtil.MSG_SUCESSO_SAIR));
                     System.exit(0);
                     break;
                 default:
